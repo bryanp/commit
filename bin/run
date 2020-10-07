@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-puts Dir.glob("**/*", File::FNM_DOTMATCH)
+puts File.read(ENV["GITHUB_EVENT_PATH"])
