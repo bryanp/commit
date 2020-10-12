@@ -3,11 +3,12 @@
 
 # Updates templates for each scope.
 
+require_relative "../lib/commit/event"
 require_relative "../lib/commit/scope"
 require_relative "../lib/commit/operations/templates/update"
 
 load(File.expand_path("../configure-git", __FILE__))
 
 Commit::Scope.each do |scope|
-  Commit::Operations::Templates::Update.call(scope: scope)
+  Commit::Operations::Templates::Update.call(scope: scope, event: Commit::Event.global)
 end

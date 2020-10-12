@@ -2,14 +2,17 @@
 
 require "yaml"
 
+require_relative "event"
+
 module Commit
   # Operations perform one or more actions on a scope.
   #
   class Operation
-    attr_reader :scope
+    attr_reader :scope, :event
 
-    def initialize(scope:)
+    def initialize(scope:, event:)
       @scope = scope
+      @event = event
     end
 
     def call(*args, **kwargs)
@@ -17,8 +20,8 @@ module Commit
     end
 
     class << self
-      def call(*args, scope:, **kwargs)
-        instance = new(scope: scope)
+      def call(*args, scope:, event:, **kwargs)
+        instance = new(scope: scope, event: event)
         instance.call(*args, **kwargs)
         instance
       end

@@ -12,12 +12,14 @@ RSpec.describe "bin/update-templates" do
   }
 
   it "invokes the update templates operation on each scope" do
-    expect(Commit::Operations::Templates::Update).to receive(:call) do |scope:|
+    expect(Commit::Operations::Templates::Update).to receive(:call) do |scope:, event:|
       expect(scope.config).to eq("name" => "one")
+      expect(event).to be(Commit::Event.global)
     end
 
-    expect(Commit::Operations::Templates::Update).to receive(:call) do |scope:|
+    expect(Commit::Operations::Templates::Update).to receive(:call) do |scope:, event:|
       expect(scope.config).to eq("name" => "two")
+      expect(event).to be(Commit::Event.global)
     end
 
     Dir.chdir(support_path) do

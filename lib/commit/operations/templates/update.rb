@@ -36,9 +36,9 @@ module Commit
 
         # @api private
         private def commit_and_push
-          Commit::Operations::Git::Commit.call(scope: scope, message: "update templates")
+          Commit::Operations::Git::Commit.call(scope: scope, event: event, message: "update templates")
 
-          Commit::Operations::Git::Push.call(scope: scope)
+          Commit::Operations::Git::Push.call(scope: scope, event: event)
         end
 
         # @api private
