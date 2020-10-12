@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Configures git.
+
+git_email = ENV.fetch("COMMIT__GIT_EMAIL")
+git_name = ENV.fetch("COMMIT__GIT_NAME")
+
+unless ENV.include?("COMMIT__DRYRUN")
+  `git config --local user.email "#{git_email}"`
+  `git config --local user.name "#{git_name}"`
+end

@@ -1,0 +1,6 @@
+templates:
+  - path: "./my-gem.gemspec"
+    template: "my-gem.gemspec.erb"
+
+gemspec:
+  name: "my-gem"
