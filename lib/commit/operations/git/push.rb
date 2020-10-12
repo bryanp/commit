@@ -7,8 +7,6 @@ module Commit
     module Git
       class Push < Operation
         def call(user: ENV["COMMIT__GIT_USER"], token: ENV["COMMIT__GIT_TOKEN"], repo: @event.config.dig("repository", "full_name"))
-          `git pull --rebase`
-
           `git push https://#{user}:#{token}@github.com/#{repo}.git`
         end
       end
