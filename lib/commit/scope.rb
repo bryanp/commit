@@ -18,6 +18,10 @@ module Commit
           # Ignore commit directories within hidden folders.
           #
           path.dirname.to_s.split("/").any? { |part| part[0] == "." }
+        }.reject { |path|
+          # Ignore commit directories within tmp folders.
+          #
+          path.dirname.to_s.split("/").any? { |part| part == "tmp" }
         }.map { |path|
           new(path: path)
         }.each(&block)
