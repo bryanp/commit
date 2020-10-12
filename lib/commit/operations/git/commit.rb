@@ -9,7 +9,7 @@ module Commit
         def call(message:)
           `git add -A`
 
-          `git commit -a -m "[commit tools] #{escape(message)}" || echo "nothing to commit"`
+          `git commit -a -m "[commit] #{escape(message)}" || echo "nothing to commit"`
         end
 
         private def escape(string)
