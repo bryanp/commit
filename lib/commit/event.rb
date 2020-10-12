@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "pathname"
+require "yaml"
+
 module Commit
   class Event
     class << self
