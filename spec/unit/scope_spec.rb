@@ -28,7 +28,7 @@ RSpec.describe Commit::Scope do
   end
 
   describe "::each" do
-    it "finds scopes at pwd by default" do
+    it "finds scopes at pwd by default, ignoring scopes within hidden folders" do
       Dir.chdir(support_path.join("each")) do
         scopes = described_class.each.to_a
 

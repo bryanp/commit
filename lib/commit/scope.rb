@@ -14,6 +14,10 @@ module Commit
         root = Pathname.new(root)
         root.glob("**/*", File::FNM_DOTMATCH).select { |path|
           path.basename.fnmatch?(COMMIT_TOOLS_DIRECTORY)
+        }.reject { |path|
+          # Ignore commit directories within hidden folders.
+          #
+          path.dirname.to_s.split("/").any? { |part| part[0] == "." }
         }.map { |path|
           new(path: path)
         }.each(&block)
