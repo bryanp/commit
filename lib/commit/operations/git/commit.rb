@@ -7,8 +7,6 @@ module Commit
     module Git
       class Commit < Operation
         def call(message:)
-          `git pull --rebase`
-
           `git add -A`
 
           `git commit -a -m "[commit] #{escape(message)}" || echo "nothing to commit"`

@@ -6,6 +6,7 @@ require_relative "../../operation"
 require_relative "../../template"
 
 require_relative "../git/commit"
+require_relative "../git/pull"
 require_relative "../git/push"
 
 module Commit
@@ -18,8 +19,14 @@ module Commit
         def_delegators :"@scope", :config
 
         def call
+          pull_latest
           generate_templates
           commit_and_push
+        end
+
+        # @api private
+        private def pull_latest
+          Commit::Operations::Git::Pull.call(scope: scope, event: event)
         end
 
         # @api private
