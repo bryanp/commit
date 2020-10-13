@@ -48,7 +48,7 @@ RSpec.describe "update templates operation" do
       expect(Commit::Operations::Git::Clone).to receive(:call) do |**kwargs|
         expect(kwargs[:repo]).to eq("metabahn/commit-templates")
         expect(kwargs[:auth]).to eq(true)
-        expect(kwargs[:path].to_s.end_with?("support/externals/.commit/externals/metabahn/commit-templates")).to be(true)
+        expect(kwargs[:path].to_s.end_with?("support/externals/.commit/templates/metabahn/commit-templates")).to be(true)
       end
 
       generate

@@ -33,7 +33,7 @@ module Commit
 
         # @api private
         private def fetch_externals
-          externals_path = @scope.path.join(EXTERNALS_DIRECTORY)
+          externals_path = @scope.path.join(TEMPLATES_DIRECTORY)
 
           each_external_config do |external_config|
 
@@ -101,8 +101,6 @@ module Commit
           end
         end
 
-        # @api private
-        EXTERNALS_DIRECTORY = "externals"
         # @api private
         TEMPLATES_DIRECTORY = "templates"
       end
