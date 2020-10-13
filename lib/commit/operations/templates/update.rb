@@ -109,11 +109,7 @@ module Commit
           when NilClass
             File.basename(template, File.extname(template))
           else
-            if File.extname(template_path).empty?
-              File.join(template_path, File.basename(template, File.extname(template)))
-            else
-              template_path
-            end
+            template_path
           end
         end
 

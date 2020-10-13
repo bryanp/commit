@@ -112,24 +112,6 @@ RSpec.describe "update templates operation" do
       end
     end
 
-    context "template is configured with a path to a directory" do
-      let(:support_path) {
-        Pathname.new(File.expand_path("../update/support/directory", __FILE__))
-      }
-
-      let(:generated) {
-        [
-          support_path.join("nested")
-        ]
-      }
-
-      it "generates a file named after the template" do
-        generate
-
-        expect(support_path.join("nested/my-gem.gemspec").exist?).to be(true)
-      end
-    end
-
     context "template does not exist" do
       let(:support_path) {
         Pathname.new(File.expand_path("../update/support/missing", __FILE__))
