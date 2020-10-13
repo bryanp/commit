@@ -9,7 +9,7 @@ module Commit
       class Update < Operation
         def call(user: ENV["COMMIT__GIT_USER"], token: ENV["COMMIT__GIT_TOKEN"])
           each_dependent_config do |dependent_config|
-            Commit::Operations::Github::Dispatch.call(scope: scope, event: event, repo: dependent_config["repo"])
+            Commit::Operations::Github::Dispatch.call(scope: scope, event: event, repo: dependent_config.repo)
           end
         end
 
