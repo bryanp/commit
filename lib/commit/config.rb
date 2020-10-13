@@ -2,6 +2,20 @@
 
 module Commit
   class Config
+    class << self
+      def load(path)
+        path = Pathname.new(path.to_s)
+
+        settings = if path.exist?
+          YAML.safe_load(path.read)
+        else
+          {}
+        end
+
+        new(settings)
+      end
+    end
+
     # @api private
     attr_reader :settings
 

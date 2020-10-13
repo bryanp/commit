@@ -9,16 +9,7 @@ module Commit
   class Event
     class << self
       def global(envar = "GITHUB_EVENT_PATH")
-        @_global ||= new(config: Config.new(load_config(Pathname.new(ENV[envar].to_s))))
-      end
-
-      # @api private
-      private def load_config(config_path)
-        if config_path.exist?
-          YAML.safe_load(config_path.read)
-        else
-          {}
-        end
+        @_global ||= new(config: Config.load(ENV[envar]))
       end
     end
 

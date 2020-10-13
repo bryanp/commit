@@ -34,16 +34,7 @@ module Commit
 
     def initialize(path:)
       @path = Pathname.new(path)
-      @config = Config.new(load_config(@path.join(CONFIG_FILE)))
-    end
-
-    # @api private
-    private def load_config(config_path)
-      if config_path.exist?
-        YAML.safe_load(config_path.read)
-      else
-        {}
-      end
+      @config = Config.load(@path.join(CONFIG_FILE))
     end
 
     # @api private
