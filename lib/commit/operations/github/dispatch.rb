@@ -9,6 +9,7 @@ module Commit
         def call(repo:, user: ENV["COMMIT__GIT_USER"], token: ENV["COMMIT__GIT_TOKEN"])
           command = <<~COMMAND
             curl \
+              -v \
               -X POST \
               -H "Accept: application/vnd.github.v3+json" \
               https://#{user}:#{token}@api.github.com/repos/#{repo}/dispatches \
