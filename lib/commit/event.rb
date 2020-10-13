@@ -3,11 +3,13 @@
 require "pathname"
 require "yaml"
 
+require_relative "config"
+
 module Commit
   class Event
     class << self
       def global(envar = "GITHUB_EVENT_PATH")
-        @_global ||= new(config: load_config(Pathname.new(ENV[envar].to_s)))
+        @_global ||= new(config: Config.new(load_config(Pathname.new(ENV[envar].to_s))))
       end
 
       # @api private

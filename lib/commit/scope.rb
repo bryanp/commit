@@ -3,6 +3,8 @@
 require "pathname"
 require "yaml"
 
+require_relative "config"
+
 module Commit
   # Scopes represent a configured context to run tools in.
   #
@@ -32,7 +34,7 @@ module Commit
 
     def initialize(path:)
       @path = Pathname.new(path)
-      @config = load_config(@path.join(CONFIG_FILE))
+      @config = Config.new(load_config(@path.join(CONFIG_FILE)))
     end
 
     # @api private

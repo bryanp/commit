@@ -2,6 +2,8 @@
 
 require "fileutils"
 
+require "commit/operations/git/clone"
+
 RSpec.describe "update templates operation" do
   let(:bin_path) {
     Pathname.new(File.expand_path("../../../../../bin", __FILE__))

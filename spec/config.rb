@@ -20,6 +20,7 @@ RSpec.configure do |config|
 
   config.before do
     require "commit/operations/git/commit"
+    require "commit/operations/git/pull"
     require "commit/operations/git/push"
 
     allow(Commit::Operations::Git::Commit).to receive(:call)

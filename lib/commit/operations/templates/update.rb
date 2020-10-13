@@ -38,14 +38,14 @@ module Commit
           externals_path = @scope.path.join(TEMPLATES_DIRECTORY)
 
           each_external_config do |external_config|
-            external_path = externals_path.join(external_config["repo"])
+            external_path = externals_path.join(external_config.repo)
             @cleanup << external_path
 
             Commit::Operations::Git::Clone.call(
               scope: scope,
               event: event,
-              repo: external_config["repo"],
-              auth: external_config["private"],
+              repo: external_config.repo,
+              auth: external_config.private,
               path: external_path
             )
           end
@@ -56,7 +56,7 @@ module Commit
           templates_path = @scope.path.join(TEMPLATES_DIRECTORY)
 
           each_template_config do |template_config|
-            template = Template.new(templates_path.join(template_config["template"]))
+            template = Template.new(templates_path.join(template_config.template))
 
             generated_path = resolve_generated_path(template_config)
             template.generate(at: generated_path, context: self)
@@ -81,7 +81,7 @@ module Commit
         private def each_external_config
           return enum_for(:each_external_config) unless block_given?
 
-          config["externals"].to_a.each do |external_config|
+          config.externals.to_a.each do |external_config|
             yield external_config
           end
         end
@@ -90,15 +90,15 @@ module Commit
         private def each_template_config
           return enum_for(:each_template_config) unless block_given?
 
-          config["templates"].to_a.each do |template_config|
+          config.templates.to_a.each do |template_config|
             yield template_config
           end
         end
 
         # @api private
         private def resolve_generated_path(template_config)
-          template_path = template_config["path"]
-          template = template_config["template"]
+          template_path = template_config.path!
+          template = template_config.template
 
           case template_path
           when NilClass
