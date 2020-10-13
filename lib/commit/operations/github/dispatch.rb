@@ -6,12 +6,12 @@ module Commit
   module Operations
     module Github
       class Dispatch < Operation
-        def call(repo:, token: ENV["COMMIT__GIT_TOKEN"])
+        def call(repo:, user: ENV["COMMIT__GIT_USER"], token: ENV["COMMIT__GIT_TOKEN"])
           command = <<~COMMAND
             curl \
               -v \
+              -u #{user}:#{token} \
               -X POST \
-              -H "Authorization: token #{token}" \
               -H "Accept: application/vnd.github.v3+json" \
               https://api.github.com/repos/#{repo}/dispatches \
               -d '{"event_type":"commit.touch"}'
