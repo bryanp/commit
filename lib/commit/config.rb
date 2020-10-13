@@ -2,6 +2,39 @@
 
 module Commit
   class Config
+    class StringBuilder
+      PATTERN = /{([^}]*)}/
+
+      def initialize(string)
+        @string = string
+      end
+
+      def build(context)
+        working = @string.dup
+
+        working.scan(PATTERN).each do |match|
+          value = resolve_value(match[0], context)
+
+          working.gsub!("{#{match[0]}}", value)
+        end
+
+        working
+      end
+
+      # @api private
+      private def resolve_value(name, context)
+        value = nil
+
+        name.split(".").each do |name_part|
+          value = context.public_send(name_part.to_sym)
+
+          context = value
+        end
+
+        value
+      end
+    end
+
     class << self
       def load(path)
         path = Pathname.new(path.to_s)
@@ -21,6 +54,16 @@ module Commit
 
     def initialize(settings)
       @settings = settings
+    end
+
+    def expand(setting, context:)
+      value = @settings[setting.to_s]
+
+      if value.is_a?(String)
+        StringBuilder.new(value).build(context)
+      else
+        value
+      end
     end
 
     def method_missing(name)

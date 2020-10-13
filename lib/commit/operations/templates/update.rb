@@ -97,7 +97,7 @@ module Commit
 
         # @api private
         private def resolve_generated_path(template_config)
-          template_path = template_config.path!
+          template_path = template_config.expand(:path, context: self)
           template = template_config.template
 
           case template_path

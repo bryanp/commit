@@ -140,6 +140,24 @@ RSpec.describe "update templates operation" do
         }.to raise_error(NameError)
       end
     end
+
+    context "template expands the path" do
+      let(:support_path) {
+        Pathname.new(File.expand_path("../update/support/expanded", __FILE__))
+      }
+
+      let(:generated) {
+        [
+          support_path.join("test-expand.gemspec")
+        ]
+      }
+
+      it "expands the template path" do
+        generate
+
+        expect(support_path.join("test-expand.gemspec").exist?).to be(true)
+      end
+    end
   end
 
   describe "cleaning up external repos" do
