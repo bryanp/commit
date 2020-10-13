@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "forwardable"
-
 require_relative "../../operation"
 require_relative "../../template"
 
@@ -16,9 +14,6 @@ module Commit
       # Updates templates in context of the current scope.
       #
       class Update < Operation
-        extend Forwardable
-        def_delegators :"@scope", :config
-
         def initialize(*, **)
           super
 

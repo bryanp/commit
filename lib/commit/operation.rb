@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "forwardable"
 require "yaml"
 
 require_relative "event"
@@ -9,6 +10,9 @@ module Commit
   #
   class Operation
     attr_reader :scope, :event
+
+    extend Forwardable
+    def_delegators :"@scope", :config
 
     def initialize(scope:, event:)
       @scope = scope
