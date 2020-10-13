@@ -12,10 +12,8 @@ module Commit
           FileUtils.mkdir_p(path)
 
           if auth
-            puts "cloning private repo as `#{user}'..."
             `git clone https://#{user}:#{token}@github.com/#{repo}.git #{path}`
           else
-            puts "cloning public repo..."
             `git clone git@github.com:#{repo} #{path}`
           end
         end
