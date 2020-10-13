@@ -49,6 +49,8 @@ RSpec.describe "update templates operation" do
         expect(kwargs[:repo]).to eq("metabahn/commit-templates")
         expect(kwargs[:auth]).to eq(true)
         expect(kwargs[:path].to_s.end_with?("support/externals/.commit/templates/metabahn/commit-templates")).to be(true)
+
+        FileUtils.mkdir_p(kwargs[:path])
       end
 
       generate
@@ -153,6 +155,28 @@ RSpec.describe "update templates operation" do
           generate
         }.to raise_error(NameError)
       end
+    end
+  end
+
+  describe "cleaning up external repos" do
+    let(:support_path) {
+      Pathname.new(File.expand_path("../update/support/externals", __FILE__))
+    }
+
+    let(:generated) { [] }
+
+    it "removes external repos" do
+      external_path = nil
+
+      expect(Commit::Operations::Git::Clone).to receive(:call) do |**kwargs|
+        external_path = kwargs[:path]
+
+        FileUtils.mkdir_p(kwargs[:path])
+      end
+
+      generate
+
+      expect(external_path.exist?).to be(false)
     end
   end
 

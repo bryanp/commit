@@ -19,10 +19,17 @@ module Commit
         extend Forwardable
         def_delegators :"@scope", :config
 
+        def initialize(*, **)
+          super
+
+          @cleanup = []
+        end
+
         def call
           pull_latest
           fetch_externals
           generate_templates
+          cleanup
           commit_and_push
         end
 
@@ -36,13 +43,15 @@ module Commit
           externals_path = @scope.path.join(TEMPLATES_DIRECTORY)
 
           each_external_config do |external_config|
+            external_path = externals_path.join(external_config["repo"])
+            @cleanup << external_path
 
             Commit::Operations::Git::Clone.call(
               scope: scope,
               event: event,
               repo: external_config["repo"],
               auth: external_config["private"],
-              path: externals_path.join(external_config["repo"])
+              path: external_path
             )
           end
         end
@@ -56,6 +65,13 @@ module Commit
 
             generated_path = resolve_generated_path(template_config)
             template.generate(at: generated_path, context: self)
+          end
+        end
+
+        # @api private
+        private def cleanup
+          @cleanup.each do |path|
+            FileUtils.rm_r(path)
           end
         end
 
