@@ -1,0 +1,3 @@
+externals:
+  - repo: "metabahn/commit-templates"
+    private: true

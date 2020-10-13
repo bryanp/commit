@@ -5,6 +5,7 @@ require "forwardable"
 require_relative "../../operation"
 require_relative "../../template"
 
+require_relative "../git/clone"
 require_relative "../git/commit"
 require_relative "../git/pull"
 require_relative "../git/push"
@@ -20,6 +21,7 @@ module Commit
 
         def call
           pull_latest
+          fetch_externals
           generate_templates
           commit_and_push
         end
@@ -27,6 +29,22 @@ module Commit
         # @api private
         private def pull_latest
           Commit::Operations::Git::Pull.call(scope: scope, event: event)
+        end
+
+        # @api private
+        private def fetch_externals
+          externals_path = @scope.path.join(EXTERNALS_DIRECTORY)
+
+          each_external_config do |external_config|
+
+            Commit::Operations::Git::Clone.call(
+              scope: scope,
+              event: event,
+              repo: external_config["repo"],
+              auth: external_config["private"],
+              path: externals_path.join(external_config["repo"])
+            )
+          end
         end
 
         # @api private
@@ -46,6 +64,15 @@ module Commit
           Commit::Operations::Git::Commit.call(scope: scope, event: event, message: "update templates")
 
           Commit::Operations::Git::Push.call(scope: scope, event: event)
+        end
+
+        # @api private
+        private def each_external_config
+          return enum_for(:each_external_config) unless block_given?
+
+          config["externals"].to_a.each do |external_config|
+            yield external_config
+          end
         end
 
         # @api private
@@ -74,6 +101,8 @@ module Commit
           end
         end
 
+        # @api private
+        EXTERNALS_DIRECTORY = "externals"
         # @api private
         TEMPLATES_DIRECTORY = "templates"
       end

@@ -23,6 +23,10 @@ RSpec.describe "update templates operation" do
     end
   end
 
+  before do
+    allow(Commit::Operations::Git::Clone).to receive(:call)
+  end
+
   after do
     generated.each do |path|
       if path.file?
@@ -30,6 +34,24 @@ RSpec.describe "update templates operation" do
       elsif path.directory?
         FileUtils.rm_r(path)
       end
+    end
+  end
+
+  describe "fetching external templates" do
+    let(:support_path) {
+      Pathname.new(File.expand_path("../update/support/externals", __FILE__))
+    }
+
+    let(:generated) { [] }
+
+    it "clones external templates" do
+      expect(Commit::Operations::Git::Clone).to receive(:call) do |**kwargs|
+        expect(kwargs[:repo]).to eq("metabahn/commit-templates")
+        expect(kwargs[:auth]).to eq(true)
+        expect(kwargs[:path].to_s.end_with?("support/externals/.commit/externals/metabahn/commit-templates")).to be(true)
+      end
+
+      generate
     end
   end
 
