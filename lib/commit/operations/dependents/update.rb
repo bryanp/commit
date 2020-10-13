@@ -17,7 +17,7 @@ module Commit
         private def each_dependent_config
           return enum_for(:each_dependent_config) unless block_given?
 
-          config["dependents"].to_a.each do |dependent_config|
+          config.dependents.to_a.each do |dependent_config|
             yield dependent_config
           end
         end
