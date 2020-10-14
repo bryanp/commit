@@ -188,25 +188,25 @@ RSpec.describe "update templates operation" do
             groups:
               - name: "foo"
                 templates:
-                  - template: "foo.erb"
-                    path: "./foo"
-                  - template: "foobaz.erb"
-                    path: "./baz"
+                  - source: "foo.erb"
+                    destination: "./foo"
+                  - source: "foobaz.erb"
+                    destination: "./baz"
 
               - name: "bar"
                 templates:
-                  - template: "bar.erb"
-                    path: "./bar"
+                  - source: "bar.erb"
+                    destination: "./bar"
 
               - name: "baz"
                 templates:
-                  - template: "baz.erb"
-                    path: "./baz"
+                  - source: "baz.erb"
+                    destination: "./baz"
 
               - name: "qux"
                 templates:
-                  - template: "qux.erb"
-                    path: "./qux"
+                  - source: "qux.erb"
+                    destination: "./qux"
         CONTENT
       end
 

@@ -61,7 +61,7 @@ module Commit
           return enum_for(:each_applicable_group) unless block_given?
 
           each_external_config do |external_config|
-            external_config.groups.to_a.each do |group|
+            external_config.commit.groups.to_a.each do |group|
               yield group, external_config if applicable_group?(group)
             end
           end
