@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Commit
-  class Config
+  class Config < BasicObject
     class StringBuilder
       PATTERN = /{([^}]*)}/
 
@@ -47,6 +47,10 @@ module Commit
 
         new(settings)
       end
+
+      def const_missing(name)
+        ::Object.const_get(name)
+      end
     end
 
     # @api private
@@ -66,7 +70,11 @@ module Commit
       end
     end
 
-    def method_missing(name)
+    def public_send(name, *args, **kwargs, &block)
+      method_missing(name, *args, **kwargs, &block)
+    end
+
+    def method_missing(name, *args, **kwargs, &block)
       name = name.to_s
 
       if name.end_with?("!")
@@ -95,7 +103,7 @@ module Commit
     private def wrap(value)
       case value
       when Hash, NilClass
-        self.class.new(value)
+        Config.new(value)
       when Array
         value.map { |each_value|
           wrap(each_value)
