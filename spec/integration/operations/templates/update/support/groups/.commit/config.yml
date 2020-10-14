@@ -8,8 +8,8 @@ commit:
     - repo: "metabahn/test-templates-1"
 
   templates:
-    - template: "qux.erb"
-      path: "qux"
+    - source: "qux.erb"
+      destination: "qux"
 
 project:
   name: "test!"

@@ -24,11 +24,11 @@ module Commit
             # TODO: Decide if mutating state that's passed in is desirable or if a better pattern is needed.
             #
             configured_templates << {
-              "template" => @scope.path.join(
-                TEMPLATES_DIRECTORY, external_config.repo, template.template
+              "source" => @scope.path.join(
+                TEMPLATES_DIRECTORY, external_config.repo, template.source
               ).to_s,
 
-              "path" => template.path
+              "destination" => template.destination
             }
           end
         end
@@ -41,7 +41,7 @@ module Commit
         # @api private
         private def applicable_template?(template)
           !config.commit.templates.to_a.any? { |configured_template|
-            File.expand_path(configured_template.path) == File.expand_path(template.path)
+            File.expand_path(configured_template.destination) == File.expand_path(template.destination)
           }
         end
 

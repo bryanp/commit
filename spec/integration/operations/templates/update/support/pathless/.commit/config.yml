@@ -1,6 +1,6 @@
 commit:
   templates:
-    - template: "my-gem.gemspec.erb"
+    - source: "my-gem.gemspec.erb"
 
 gemspec:
   name: "my-gem"

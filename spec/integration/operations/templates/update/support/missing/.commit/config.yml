@@ -1,7 +1,7 @@
 commit:
   templates:
-    - path: "./my-gem.gemspec"
-      template: "my-gem.gemspec.erb"
+    - source: "my-gem.gemspec.erb"
+      destination: "./my-gem.gemspec"
 
 gemspec:
   name: "my-gem"

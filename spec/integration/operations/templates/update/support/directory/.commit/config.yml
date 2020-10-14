@@ -1,7 +1,7 @@
 commit:
   templates:
-    - path: "nested"
-      template: "my-gem.gemspec.erb"
+    - source: "my-gem.gemspec.erb"
+      destination: "nested"
 
 gemspec:
   name: "my-gem"
