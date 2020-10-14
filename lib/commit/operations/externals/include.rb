@@ -13,12 +13,12 @@ module Commit
         attr_reader :result
 
         def call
-          configured_templates = config.templates!
+          configured_templates = config.commit.templates!
 
           if configured_templates.nil?
             configured_templates = []
 
-            config.settings["templates"] = configured_templates
+            config.commit.settings["templates"] = configured_templates
           end
 
           each_applicable_group_template do |template, external_config|
