@@ -19,7 +19,7 @@ unless defined?($commit_bootstrap_defined)
   private def at_commit_root
     root_path = File.expand_path("../../", __FILE__)
 
-    if Dir.pwd = root_path
+    if Dir.pwd == root_path
       yield
     else
       Dir.chdir(root_path) do
