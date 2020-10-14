@@ -1,14 +1,15 @@
-includes:
-  - baz
-  - foo
-  - qux
+commit:
+  includes:
+    - baz
+    - foo
+    - qux
 
-externals:
-  - repo: "metabahn/test-templates-1"
+  externals:
+    - repo: "metabahn/test-templates-1"
 
-templates:
-  - template: "qux.erb"
-    path: "qux"
+  templates:
+    - template: "qux.erb"
+      path: "qux"
 
 project:
   name: "test!"

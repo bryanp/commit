@@ -35,12 +35,12 @@ module Commit
 
         # @api private
         private def applicable_group?(group)
-          config.includes.to_a.include?(group.name)
+          config.commit.includes.to_a.include?(group.name)
         end
 
         # @api private
         private def applicable_template?(template)
-          !config.templates.to_a.any? { |configured_template|
+          !config.commit.templates.to_a.any? { |configured_template|
             File.expand_path(configured_template.path) == File.expand_path(template.path)
           }
         end
@@ -48,7 +48,7 @@ module Commit
         # @api private
         private def each_applicable_group_template
           each_applicable_group.sort { |(a, _), (b, _)|
-            config.includes.index(a.name) <=> config.includes.index(b.name)
+            config.commit.includes.index(a.name) <=> config.commit.includes.index(b.name)
           }.each do |group, external_config|
             group.templates.each do |template|
               yield template, external_config if applicable_template?(template)
@@ -71,7 +71,7 @@ module Commit
         private def each_external_config
           return enum_for(:each_external_config) unless block_given?
 
-          config.externals.to_a.each do |external_config|
+          config.commit.externals.to_a.each do |external_config|
             config = Config.load(@scope.path.join(TEMPLATES_DIRECTORY, external_config.repo, ".commit/config.yml"))
 
             # TODO: This feels incorrect, but we need it above.

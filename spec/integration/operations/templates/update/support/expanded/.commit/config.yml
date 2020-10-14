@@ -1,6 +1,7 @@
-templates:
-  - path: "./{config.gemspec.name}.gemspec"
-    template: "my-gem.gemspec.erb"
+commit:
+  templates:
+    - path: "./{config.gemspec.name}.gemspec"
+      template: "my-gem.gemspec.erb"
 
 gemspec:
   name: "test-expand"

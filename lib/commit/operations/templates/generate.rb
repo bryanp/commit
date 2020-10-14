@@ -22,7 +22,7 @@ module Commit
         private def each_template_config
           return enum_for(:each_template_config) unless block_given?
 
-          config.templates.to_a.each do |template_config|
+          config.commit.templates.to_a.each do |template_config|
             yield template_config
           end
         end

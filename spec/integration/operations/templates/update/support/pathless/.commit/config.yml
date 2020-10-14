@@ -1,5 +1,6 @@
-templates:
-  - template: "my-gem.gemspec.erb"
+commit:
+  templates:
+    - template: "my-gem.gemspec.erb"
 
 gemspec:
   name: "my-gem"

@@ -29,7 +29,7 @@ module Commit
         private def each_external_config
           return enum_for(:each_external_config) unless block_given?
 
-          config.externals.to_a.each do |external_config|
+          config.commit.externals.to_a.each do |external_config|
             yield external_config
           end
         end

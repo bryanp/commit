@@ -184,28 +184,29 @@ RSpec.describe "update templates operation" do
 
       test_templates_1_path.join(".commit/config.yml").open("w+") do |file|
         file.write <<~CONTENT
-          groups:
-            - name: "foo"
-              templates:
-                - template: "foo.erb"
-                  path: "./foo"
-                - template: "foobaz.erb"
-                  path: "./baz"
+          commit:
+            groups:
+              - name: "foo"
+                templates:
+                  - template: "foo.erb"
+                    path: "./foo"
+                  - template: "foobaz.erb"
+                    path: "./baz"
 
-            - name: "bar"
-              templates:
-                - template: "bar.erb"
-                  path: "./bar"
+              - name: "bar"
+                templates:
+                  - template: "bar.erb"
+                    path: "./bar"
 
-            - name: "baz"
-              templates:
-                - template: "baz.erb"
-                  path: "./baz"
+              - name: "baz"
+                templates:
+                  - template: "baz.erb"
+                    path: "./baz"
 
-            - name: "qux"
-              templates:
-                - template: "qux.erb"
-                  path: "./qux"
+              - name: "qux"
+                templates:
+                  - template: "qux.erb"
+                    path: "./qux"
         CONTENT
       end
 

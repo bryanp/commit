@@ -1,6 +1,7 @@
-templates:
-  - path: "foo/bar/itsa.gemspec"
-    template: "my-gem.gemspec.erb"
+commit:
+  templates:
+    - path: "foo/bar/itsa.gemspec"
+      template: "my-gem.gemspec.erb"
 
 gemspec:
   name: "my-gem"
