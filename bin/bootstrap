@@ -8,6 +8,7 @@ unless defined?($commit_bootstrap_defined)
     at_commit_root do
       if !defined?(Bundler)
         require "bundler"
+        `bundle install`
       end
 
       Bundler.setup :default
