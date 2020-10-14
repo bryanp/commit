@@ -16,8 +16,9 @@ module Commit
           configured_templates = config.templates!
 
           if configured_templates.nil?
-            config.settings["templates"] = []
-            configured_templates = config.templates!
+            configured_templates = []
+
+            config.settings["templates"] = configured_templates
           end
 
           each_applicable_group_template do |template, external_config|
