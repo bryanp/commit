@@ -20,7 +20,9 @@ RSpec.describe Commit::Operation do
     end
 
     let(:instance) {
-      instance_double(described_class)
+      # We have to stub `cleanup` here because rspec instance doubles are dumb.
+      #
+      instance_double(described_class, cleanup: nil)
     }
 
     subject {
