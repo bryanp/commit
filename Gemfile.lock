@@ -2,10 +2,22 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.1)
+    concurrent-ruby (1.1.7)
     diff-lcs (1.4.4)
+    dry-inflector (0.2.0)
+    equatable (0.6.1)
+    pakyow-support (1.0.6)
+      concurrent-ruby (~> 1.1)
+      dry-inflector (~> 0.2.0)
+      pastel (~> 0.7.3)
+      tty-command (~> 0.9.0)
+      tty-spinner (~> 0.9.1)
     parallel (1.19.2)
     parser (2.7.1.5)
       ast (~> 2.4.1)
+    pastel (0.7.4)
+      equatable (~> 0.6)
+      tty-color (~> 0.5)
     rainbow (3.0.0)
     regexp_parser (1.8.1)
     rexml (3.2.4)
@@ -40,12 +52,19 @@ GEM
     standard (0.7)
       rubocop (= 0.92)
       rubocop-performance (= 1.8.1)
+    tty-color (0.5.2)
+    tty-command (0.9.0)
+      pastel (~> 0.7.0)
+    tty-cursor (0.7.1)
+    tty-spinner (0.9.3)
+      tty-cursor (~> 0.7)
     unicode-display_width (1.7.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  pakyow-support
   rspec
   standard
 

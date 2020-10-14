@@ -160,6 +160,129 @@ RSpec.describe "update templates operation" do
     end
   end
 
+  describe "including templates from external groups" do
+    let(:support_path) {
+      Pathname.new(File.expand_path("../update/support/groups", __FILE__))
+    }
+
+    let(:generated) {
+      [
+        support_path.join("test-expand.gemspec")
+      ]
+    }
+
+    # Mock the externals since they'll be cleaned up as artifacts.
+    #
+    before do
+      test_templates_1_path = support_path.join(".commit/templates/metabahn/test-templates-1")
+      test_templates_2_path = support_path.join(".commit/templates/metabahn/test-templates-2")
+
+      FileUtils.mkdir_p(test_templates_1_path.join(".commit"))
+      FileUtils.mkdir_p(test_templates_2_path.join(".commit"))
+
+      generated << support_path.join(".commit/templates/metabahn")
+
+      test_templates_1_path.join(".commit/config.yml").open("w+") do |file|
+        file.write <<~CONTENT
+          groups:
+            - name: "foo"
+              templates:
+                - template: "foo.erb"
+                  path: "./foo"
+                - template: "foobaz.erb"
+                  path: "./baz"
+
+            - name: "bar"
+              templates:
+                - template: "bar.erb"
+                  path: "./bar"
+
+            - name: "baz"
+              templates:
+                - template: "baz.erb"
+                  path: "./baz"
+
+            - name: "qux"
+              templates:
+                - template: "qux.erb"
+                  path: "./qux"
+        CONTENT
+      end
+
+      test_templates_1_path.join("foo.erb").open("w+") do |file|
+        file.write <<~CONTENT
+          test-templates-1-foo
+          <%= config.project.name %>
+        CONTENT
+      end
+
+      test_templates_1_path.join("bar.erb").open("w+") do |file|
+        file.write <<~CONTENT
+          test-templates-1-bar
+        CONTENT
+      end
+
+      test_templates_1_path.join("foobaz.erb").open("w+") do |file|
+        file.write <<~CONTENT
+          test-templates-1-foobaz
+        CONTENT
+      end
+
+      test_templates_1_path.join("baz.erb").open("w+") do |file|
+        file.write <<~CONTENT
+          test-templates-1-baz
+        CONTENT
+      end
+
+      test_templates_1_path.join("qux.erb").open("w+") do |file|
+        file.write <<~CONTENT
+          test-templates-1-qux
+        CONTENT
+      end
+    end
+
+    it "includes templates for included groups" do
+      generate
+
+      expect(support_path.join("foo").read).to eq_sans_whitespace(
+        <<~CONTENT
+          test-templates-1-foo
+          test!
+        CONTENT
+      )
+    end
+
+    it "does not include templates for groups that have not been included" do
+      generate
+
+      expect(support_path.join("bar").exist?).to be(false)
+    end
+
+    context "multiple included groups define the same template" do
+      it "includes the template with the highest priority" do
+        generate
+
+        expect(support_path.join("baz").read).to eq_sans_whitespace(
+          <<~CONTENT
+            test-templates-1-baz
+          CONTENT
+        )
+      end
+    end
+
+    context "template is already defined by the including repo" do
+      it "does not include the template from the external group" do
+        generate
+
+        expect(support_path.join("qux").read).to eq_sans_whitespace(
+          <<~CONTENT
+            qux
+          CONTENT
+        )
+      end
+    end
+  end
+
   describe "cleaning up external repos" do
     let(:support_path) {
       Pathname.new(File.expand_path("../update/support/externals", __FILE__))

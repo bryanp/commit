@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "../externals/fetch"
+require_relative "../externals/include"
 
 require_relative "../git/commit"
 require_relative "../git/pull"
@@ -18,6 +19,7 @@ module Commit
           Git::Pull.call(scope: scope, event: event)
 
           Externals::Fetch.call(scope: scope, event: event) do
+            Externals::Include.call(scope: scope, event: event)
             Templates::Generate.call(scope: scope, event: event)
           end
 
