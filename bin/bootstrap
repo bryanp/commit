@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+unless defined?($commit_bootstrap_defined)
+  def bootstrap
+    # original_path = Dir.pwd
+
+    at_commit_root do
+      if !defined?(Bundler)
+        require "bundler"
+      end
+
+      Bundler.setup :default
+    end
+
+    yield
+  end
+
+  private def at_commit_root
+    root_path = File.expand_path("../../", __FILE__)
+
+    if Dir.pwd = root_path
+      yield
+    else
+      Dir.chdir(root_path) do
+        yield
+      end
+    end
+  end
+
+  $commit_bootstrap_defined = true
+end

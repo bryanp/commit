@@ -7,8 +7,11 @@ require_relative "../lib/commit/event"
 require_relative "../lib/commit/scope"
 require_relative "../lib/commit/operations/dependents/update"
 
+load(File.expand_path("../bootstrap", __FILE__))
 load(File.expand_path("../configure-git", __FILE__))
 
-Commit::Scope.each do |scope|
-  Commit::Operations::Dependents::Update.call(scope: scope, event: Commit::Event.global)
+bootstrap do
+  Commit::Scope.each do |scope|
+    Commit::Operations::Dependents::Update.call(scope: scope, event: Commit::Event.global)
+  end
 end
