@@ -2,6 +2,6 @@
 ## <%= release.version %><%= release.value.include?("date") ? " ([#{release.date}](#{release.link}))" : "" %>
 
 <% release.changes.each do |change| -%>
-  * `<%= change.type %>` [#<%= change.id %>](<%= change.link %>) <%= change.summary %> ([<%= change.author.username %>](<%= change.author.link %>))
+  *<%= change.type.value ? " `#{change.type}`" : "" %><%= change.id.value ? " [##{change.id}](#{change.link})" : "" %> <%= change.summary %><%= change.author ? " ([#{change.author.username}](#{change.author.link}))" : "" %>
 <% end %>
 <% end %>
