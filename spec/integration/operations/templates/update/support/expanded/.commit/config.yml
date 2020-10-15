@@ -1,7 +1,8 @@
 commit:
   templates:
-    - source: "my-gem.gemspec.erb"
+    - source: "{config.gemspec.which}.gemspec.erb"
       destination: "./{config.gemspec.name}.gemspec"
 
 gemspec:
   name: "test-expand"
+  which: "my-gem"

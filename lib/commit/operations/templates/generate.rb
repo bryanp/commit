@@ -11,7 +11,7 @@ module Commit
           templates_path = @scope.path.join(TEMPLATES_DIRECTORY)
 
           each_template_config do |template_config|
-            template = Template.new(templates_path.join(template_config.source))
+            template = Template.new(templates_path.join(template_config.expand(:source, context: self)))
 
             generated_path = resolve_generated_path(template_config)
             template.generate(at: generated_path, context: self)
