@@ -5,6 +5,10 @@ require "yaml"
 
 require_relative "../../operation"
 
+require_relative "../git/commit"
+require_relative "../git/pull"
+require_relative "../git/push"
+
 module Commit
   module Operations
     module Changelogs
@@ -12,6 +16,15 @@ module Commit
         def call
           return unless applicable?
 
+          Git::Pull.call(scope: scope, event: event)
+
+          generate_release_data
+
+          Git::Commit.call(scope: scope, event: event, message: "update releases")
+          Git::Push.call(scope: scope, event: event)
+        end
+
+        private def generate_release_data
           entry = {
             "id" => id,
             "type" => type,
