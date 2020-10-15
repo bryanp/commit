@@ -1,0 +1,9 @@
+- version: "v2.0.0"
+  changes:
+    - id: "3"
+      type: "fix"
+      summary: "this is another v2.0 change"
+      link: "https://github.com/metabahn/commit-test/pull/3"
+      author:
+        link: "https://github.com/bryanp"
+        username: "bryanp"

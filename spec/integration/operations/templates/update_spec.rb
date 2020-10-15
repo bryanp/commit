@@ -371,6 +371,46 @@ RSpec.describe "update templates operation" do
     end
   end
 
+  describe "including changelogs" do
+    let(:support_path) {
+      Pathname.new(File.expand_path("../update/support/changelogs", __FILE__))
+    }
+
+    let(:generated) {
+      [
+        support_path.join("CHANGELOG.md"),
+        support_path.join("nested/CHANGELOG.md")
+      ]
+    }
+
+    it "generates top-level changelogs" do
+      generate
+
+      expect(support_path.join("CHANGELOG.md").read).to eq_sans_whitespace(
+        <<~CONTENT
+          ## v2.0.0
+
+            * `fix` [#3](https://github.com/metabahn/commit-test/pull/3) this is another v2.0 change ([bryanp](https://github.com/bryanp))
+            * `chg` [#2](https://github.com/metabahn/commit-test/pull/2) this is a v2.0 change ([bryanp](https://github.com/bryanp))
+
+          ## v1.0.0 ([2020-10-15](https://github.com/metabahn/commit-test/releases/tag/v1.0.0))
+
+            * `add` [#1](https://github.com/metabahn/commit-test/pull/1) this is a v1.0 change ([bryanp](https://github.com/bryanp))
+        CONTENT
+      )
+    end
+
+    it "generates nested changelogs" do
+      generate
+
+      expect(support_path.join("nested/CHANGELOG.md").read).to eq_sans_whitespace(
+        <<~CONTENT
+          nested changelog
+        CONTENT
+      )
+    end
+  end
+
   describe "cleaning up external repos" do
     let(:support_path) {
       Pathname.new(File.expand_path("../update/support/externals", __FILE__))

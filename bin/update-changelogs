@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Updates changelogs for each scope.
+
+load(File.expand_path("../bootstrap", __FILE__))
+load(File.expand_path("../configure-git", __FILE__))
+
+bootstrap do
+  require_relative "../lib/commit/event"
+  require_relative "../lib/commit/scope"
+  require_relative "../lib/commit/operations/changelogs/update"
+
+  Commit::Scope.each do |scope|
+    Commit::Operations::Changelogs::Update.call(scope: scope, event: Commit::Event.global)
+  end
+end

@@ -44,6 +44,12 @@ RSpec.configure do |config|
       end
     end
   end
+
+  config.after do
+    require "commit/event"
+
+    Commit::Event.reset
+  end
 end
 
 RSpec::Matchers.define :eq_sans_whitespace do |expected|

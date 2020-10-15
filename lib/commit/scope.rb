@@ -4,6 +4,7 @@ require "pathname"
 require "yaml"
 
 require_relative "config"
+require_relative "data"
 
 module Commit
   # Scopes represent a configured context to run tools in.
@@ -30,16 +31,19 @@ module Commit
       end
     end
 
-    attr_reader :path, :config
+    attr_reader :path, :config, :data
 
     def initialize(path:)
       @path = Pathname.new(path)
       @config = Config.load(@path.join(CONFIG_FILE))
+      @data = Data.new(@path.join(DATA_PATH))
     end
 
     # @api private
     COMMIT_TOOLS_DIRECTORY = ".commit"
     # @api private
     CONFIG_FILE = "config.yml"
+    # @api private
+    DATA_PATH = "data"
   end
 end

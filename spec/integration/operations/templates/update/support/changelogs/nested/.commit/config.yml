@@ -1,0 +1,11 @@
+commit:
+  changelogs:
+    - label: "changelog/nested"
+      destination: "./CHANGELOG.md"
+      source: "changelog.md.erb"
+
+      types:
+        - label: chg
+        - label: fix
+        - label: dep
+        - label: add

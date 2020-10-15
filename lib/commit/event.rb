@@ -11,6 +11,10 @@ module Commit
       def global(envar = "GITHUB_EVENT_PATH")
         @_global ||= new(config: Config.load(ENV[envar]))
       end
+
+      def reset
+        remove_instance_variable(:@_global) if defined?(@_global)
+      end
     end
 
     attr_reader :config

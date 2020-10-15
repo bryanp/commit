@@ -1,0 +1,9 @@
+commit:
+  changelogs:
+    - label: "changelog"
+      destination: "./CHANGELOG.md"
+
+  changetypes:
+    - label: chg
+    - label: fix
+    - label: dep

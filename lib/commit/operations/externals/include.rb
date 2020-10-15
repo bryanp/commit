@@ -44,13 +44,7 @@ module Commit
 
         # @api private
         private def include_templates
-          configured_templates = config.commit.templates!
-
-          if configured_templates.nil?
-            configured_templates = []
-
-            config.commit.settings["templates"] = configured_templates
-          end
+          configured_templates = config.commit.ensure(:templates, [])
 
           each_applicable_group_template do |template, external_config|
             # TODO: Decide if mutating state that's passed in is desirable or if a better pattern is needed.

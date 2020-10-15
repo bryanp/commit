@@ -12,7 +12,7 @@ module Commit
     attr_reader :scope, :event, :artifacts
 
     extend Forwardable
-    def_delegators :"@scope", :config
+    def_delegators :"@scope", :config, :data
 
     def initialize(scope:, event:)
       @scope = scope

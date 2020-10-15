@@ -70,6 +70,18 @@ module Commit
       end
     end
 
+    def ensure(setting, fallback)
+      value = public_send(:"#{setting}!")
+
+      if value.nil?
+        value = fallback
+
+        settings[setting.to_s] = value
+      end
+
+      value
+    end
+
     def public_send(name, *args, **kwargs, &block)
       method_missing(name, *args, **kwargs, &block)
     end
