@@ -162,24 +162,16 @@ RSpec.describe "update templates operation" do
 
   describe "including templates from external groups" do
     let(:support_path) {
-      Pathname.new(File.expand_path("../update/support/groups", __FILE__))
+      Pathname.new(File.expand_path("../update/support/group-templates", __FILE__))
     }
 
-    let(:generated) {
-      [
-        support_path.join("test-expand.gemspec")
-      ]
-    }
+    let(:generated) { [] }
 
     # Mock the externals since they'll be cleaned up as artifacts.
     #
     before do
       test_templates_1_path = support_path.join(".commit/templates/metabahn/test-templates-1")
-      test_templates_2_path = support_path.join(".commit/templates/metabahn/test-templates-2")
-
       FileUtils.mkdir_p(test_templates_1_path.join(".commit"))
-      FileUtils.mkdir_p(test_templates_2_path.join(".commit"))
-
       generated << support_path.join(".commit/templates/metabahn")
 
       test_templates_1_path.join(".commit/config.yml").open("w+") do |file|
@@ -281,6 +273,101 @@ RSpec.describe "update templates operation" do
           CONTENT
         )
       end
+    end
+  end
+
+  describe "including config from external groups" do
+    let(:support_path) {
+      Pathname.new(File.expand_path("../update/support/group-config", __FILE__))
+    }
+
+    let(:generated) { [] }
+
+    # Mock the externals since they'll be cleaned up as artifacts.
+    #
+    before do
+      test_templates_1_path = support_path.join(".commit/templates/metabahn/test-templates-1")
+      FileUtils.mkdir_p(test_templates_1_path.join(".commit"))
+      generated << support_path.join(".commit/templates/metabahn")
+
+      test_templates_1_path.join(".commit/config.yml").open("w+") do |file|
+        file.write <<~CONTENT
+          commit:
+            groups:
+              - name: "foo"
+                config:
+                  shared: true
+                  override: true
+
+              - name: "bar"
+                config:
+                  ignore:
+                    - bar
+
+              - name: "baz"
+                config:
+                  hashed:
+                    baz: baz
+
+              - name: "qux"
+                config:
+                  deeply:
+                    nested:
+                      setting: true
+                  ignore:
+                    - qux
+        CONTENT
+      end
+    end
+
+    it "includes shared settings" do
+      generate
+
+      expect(support_path.join("inspect").read).to include_sans_whitespace(
+        <<~CONTENT
+          shared: true
+        CONTENT
+      )
+    end
+
+    it "does not override existing settings" do
+      generate
+
+      expect(support_path.join("inspect").read).to include_sans_whitespace(
+        <<~CONTENT
+          override: false
+        CONTENT
+      )
+    end
+
+    it "merges array settings" do
+      generate
+
+      expect(support_path.join("inspect").read).to include_sans_whitespace(
+        <<~CONTENT
+          ignore: ["project", "qux", "bar"]
+        CONTENT
+      )
+    end
+
+    it "merges hash settings" do
+      generate
+
+      expect(support_path.join("inspect").read).to include_sans_whitespace(
+        <<~CONTENT
+          hashed: {"project"=>true, "nested"=>{"works"=>true}, "baz"=>"baz"}
+        CONTENT
+      )
+    end
+
+    it "merges deeply nested settings" do
+      generate
+
+      expect(support_path.join("inspect").read).to include_sans_whitespace(
+        <<~CONTENT
+          deeply: {"nested"=>{"setting"=>true}}
+        CONTENT
+      )
     end
   end
 

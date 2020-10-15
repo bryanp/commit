@@ -1,0 +1,23 @@
+commit:
+  includes:
+    - qux
+    - foo
+    - bar
+    - baz
+
+  externals:
+    - repo: "metabahn/test-templates-1"
+
+  templates:
+    - source: inspect.erb
+
+ignore:
+  - project
+
+hashed:
+  project: true
+
+  nested:
+    works: true
+
+override: false

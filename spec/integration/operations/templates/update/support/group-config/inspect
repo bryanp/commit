@@ -1,0 +1,5 @@
+shared: true
+override: false
+ignore: ["project", "qux", "bar"]
+hashed: {"project"=>true, "nested"=>{"works"=>true}, "baz"=>"baz"}
+deeply: {"nested"=>{"setting"=>true}}

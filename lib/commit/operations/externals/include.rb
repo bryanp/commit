@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "deep_merge"
 require "pakyow/support/deep_dup"
 
 require_relative "../../operation"
@@ -13,6 +14,36 @@ module Commit
         attr_reader :result
 
         def call
+          include_config
+          include_templates
+        end
+
+        # @api private
+        private def include_config
+          each_sorted_applicable_group do |group|
+            next unless group.config.settings
+
+            group.config.settings.each_pair do |key, value|
+              if config.settings.include?(key)
+                case value
+                when Array
+                  settings = config.settings[key]
+
+                  value.each do |each_value|
+                    settings << each_value unless settings.include?(each_value)
+                  end
+                when Hash
+                  config.settings[key].deep_merge!(value)
+                end
+              else
+                config.settings[key] = value
+              end
+            end
+          end
+        end
+
+        # @api private
+        private def include_templates
           configured_templates = config.commit.templates!
 
           if configured_templates.nil?
@@ -48,9 +79,7 @@ module Commit
 
         # @api private
         private def each_applicable_group_template
-          each_applicable_group.sort { |(a, _), (b, _)|
-            config.commit.includes.index(a.name) <=> config.commit.includes.index(b.name)
-          }.each do |group, external_config|
+          each_sorted_applicable_group.each do |group, external_config|
             group.templates.each do |template|
               yield template, external_config if applicable_template?(template)
             end
@@ -65,6 +94,17 @@ module Commit
             external_config.commit.groups.to_a.each do |group|
               yield group, external_config if applicable_group?(group)
             end
+          end
+        end
+
+        # @api private
+        private def each_sorted_applicable_group
+          return enum_for(:each_sorted_applicable_group) unless block_given?
+
+          each_applicable_group.sort { |(a, _), (b, _)|
+            config.commit.includes.index(a.name) <=> config.commit.includes.index(b.name)
+          }.each do |group, external_config|
+            yield group, external_config
           end
         end
 
