@@ -409,6 +409,12 @@ RSpec.describe "update templates operation" do
         CONTENT
       )
     end
+
+    it "does not generates changelogs for scopes with no release data" do
+      generate
+
+      expect(support_path.join("no-data/CHANGELOG.md").exist?).to be(false)
+    end
   end
 
   describe "cleaning up external repos" do

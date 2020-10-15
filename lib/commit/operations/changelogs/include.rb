@@ -7,6 +7,8 @@ module Commit
     module Changelogs
       class Include < Operation
         def call
+          return unless data.respond_to?(:releases)
+
           configured_templates = config.commit.ensure(:templates, [])
           default_changelog = File.expand_path("../templates/changelog.md.erb", __FILE__)
 
