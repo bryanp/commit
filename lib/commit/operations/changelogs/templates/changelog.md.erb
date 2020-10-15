@@ -1,5 +1,10 @@
 <% data.releases.each do |release| -%>
-## <%= release.version %><%= release.value.include?("date") ? " ([#{release.date}](#{release.link}))" : "" %>
+## <%= release.value.include?("link") ? "[#{release.version}](#{release.link})" : release.version %>
+<%- if release.value.include?("date") -%>
+*released on <%= release.date %>*
+<%- else -%>
+*unreleased*
+<%- end %>
 
 <% release.changes.each do |change| -%>
   *<%= change.value.include?("type") ? " `#{change.type}`" : "" %><%= change.value.include?("id") ? " [##{change.id}](#{change.link})" : "" %> <%= change.summary %><%= change.value.include?("author") ? " ([#{change.author.username}](#{change.author.link}))" : "" %>

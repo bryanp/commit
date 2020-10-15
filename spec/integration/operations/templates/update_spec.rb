@@ -390,10 +390,14 @@ RSpec.describe "update templates operation" do
         <<~CONTENT
           ## v2.0.0
 
+          *unreleased*
+
             * `fix` [#3](https://github.com/metabahn/commit-test/pull/3) this is another v2.0 change ([bryanp](https://github.com/bryanp))
             * `chg` [#2](https://github.com/metabahn/commit-test/pull/2) this is a v2.0 change ([bryanp](https://github.com/bryanp))
 
-          ## v1.0.0 ([2020-10-15](https://github.com/metabahn/commit-test/releases/tag/v1.0.0))
+          ## [v1.0.0](https://github.com/metabahn/commit-test/releases/tag/v1.0.0)
+
+          *released on 2020-10-15*
 
             * `add` [#1](https://github.com/metabahn/commit-test/pull/1) this is a v1.0 change ([bryanp](https://github.com/bryanp))
         CONTENT
