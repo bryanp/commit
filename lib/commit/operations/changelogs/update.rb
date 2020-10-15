@@ -86,8 +86,8 @@ module Commit
           config.commit.changelogs.map(&:label!)
         end
 
-        private def configured_changetype_labels
-          config.commit.changetypes.map(&:label!)
+        private def configured_changetypes
+          config.commit.changetypes
         end
 
         private def release_name
@@ -99,7 +99,15 @@ module Commit
         end
 
         private def type
-          @_type ||= (configured_changetype_labels & event.config.pull_request.labels.map(&:name!)).first
+          event_labels = event.config.pull_request.labels.map(&:name!)
+
+          changetype = configured_changetypes.find { |configured_changetype|
+            event_labels.include?(configured_changetype.label!)
+          }
+
+          return nil if changetype&.settings.nil?
+
+          @_type ||= (changetype.name! || changetype.label!)
         end
 
         private def summary
