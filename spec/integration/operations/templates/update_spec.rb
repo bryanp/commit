@@ -9,6 +9,10 @@ RSpec.describe "update templates operation" do
     Pathname.new(File.expand_path("../../../../../bin", __FILE__))
   }
 
+  let(:github_event_path) {
+    support_path.join(".github/event.yml")
+  }
+
   let(:support_path) {
     Pathname.new(File.expand_path("../update/support/simple", __FILE__))
   }
@@ -27,6 +31,8 @@ RSpec.describe "update templates operation" do
 
   before do
     allow(Commit::Operations::Git::Clone).to receive(:call)
+
+    ENV["GITHUB_EVENT_PATH"] = github_event_path.to_s
   end
 
   after do
@@ -37,6 +43,8 @@ RSpec.describe "update templates operation" do
         FileUtils.rm_r(path)
       end
     end
+
+    ENV.delete("GITHUB_EVENT_PATH")
   end
 
   describe "fetching external templates" do
@@ -452,6 +460,24 @@ RSpec.describe "update templates operation" do
       expect(Commit::Operations::Git::Push).to receive(:call)
 
       generate
+    end
+  end
+
+  context "event is not for the default branch" do
+    let(:support_path) {
+      Pathname.new(File.expand_path("../update/support/non-default", __FILE__))
+    }
+
+    let(:generated) {
+      [
+        support_path.join("CHANGELOG.md")
+      ]
+    }
+
+    it "ignores the event" do
+      generate
+
+      expect(support_path.join("CHANGELOG.md").exist?).to be(false)
     end
   end
 end

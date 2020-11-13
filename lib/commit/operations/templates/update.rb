@@ -20,6 +20,8 @@ module Commit
       #
       class Update < Operation
         def call
+          return unless applicable?
+
           Git::Pull.call(scope: scope, event: event)
 
           Externals::Fetch.call(scope: scope, event: event) do
@@ -30,6 +32,14 @@ module Commit
 
           Git::Commit.call(scope: scope, event: event, message: "update templates")
           Git::Push.call(scope: scope, event: event)
+        end
+
+        private def applicable?
+          default_branch?
+        end
+
+        private def default_branch?
+          event.config.ref! == event.config.repository.default_branch!
         end
       end
     end
