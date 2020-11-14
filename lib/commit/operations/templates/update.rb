@@ -43,7 +43,7 @@ module Commit
         end
 
         private def committed_to_default?
-          event.config.ref! == event.config.repository.default_branch!
+          event.config.ref!.to_s.split("/").last == event.config.repository.default_branch!
         end
 
         private def merged_to_default?

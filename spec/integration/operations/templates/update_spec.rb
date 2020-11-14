@@ -463,9 +463,9 @@ RSpec.describe "update templates operation" do
     end
   end
 
-  context "event is not for the default branch" do
+  context "event is a commit to the default branch" do
     let(:support_path) {
-      Pathname.new(File.expand_path("../update/support/non-default", __FILE__))
+      Pathname.new(File.expand_path("../update/support/default", __FILE__))
     }
 
     let(:generated) {
@@ -474,10 +474,10 @@ RSpec.describe "update templates operation" do
       ]
     }
 
-    it "ignores the event" do
+    it "generates the changelog" do
       generate
 
-      expect(support_path.join("CHANGELOG.md").exist?).to be(false)
+      expect(support_path.join("CHANGELOG.md").exist?).to be(true)
     end
   end
 
@@ -496,6 +496,24 @@ RSpec.describe "update templates operation" do
       generate
 
       expect(support_path.join("CHANGELOG.md").exist?).to be(true)
+    end
+  end
+
+  context "event is a commit to a non-default branch" do
+    let(:support_path) {
+      Pathname.new(File.expand_path("../update/support/non-default", __FILE__))
+    }
+
+    let(:generated) {
+      [
+        support_path.join("CHANGELOG.md")
+      ]
+    }
+
+    it "ignores the event" do
+      generate
+
+      expect(support_path.join("CHANGELOG.md").exist?).to be(false)
     end
   end
 end
