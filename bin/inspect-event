@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Inspects the github event.
+
+require "pathname"
+
+event_path = Pathname.new(ENV["GITHUB_EVENT_PATH"])
+
+if event_path.exist?
+  puts event_path.read
+end
