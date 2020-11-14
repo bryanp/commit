@@ -1,0 +1,30 @@
+- version: "v2.0.0"
+  changes:
+    - id: "3"
+      type: "fix"
+      summary: "this is another v2.0 change"
+      link: "https://github.com/metabahn/commit-test/pull/3"
+      author:
+        link: "https://github.com/bryanp"
+        username: "bryanp"
+
+    - id: "2"
+      type: "chg"
+      summary: "this is a v2.0 change"
+      link: "https://github.com/metabahn/commit-test/pull/2"
+      author:
+        link: "https://github.com/bryanp"
+        username: "bryanp"
+
+- version: "v1.0.0"
+  date: "2020-10-15"
+  link: "https://github.com/metabahn/commit-test/releases/tag/v1.0.0"
+
+  changes:
+    - id: "1"
+      type: "add"
+      summary: "this is a v1.0 change"
+      link: "https://github.com/metabahn/commit-test/pull/1"
+      author:
+        link: "https://github.com/bryanp"
+        username: "bryanp"

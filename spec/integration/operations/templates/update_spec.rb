@@ -480,4 +480,22 @@ RSpec.describe "update templates operation" do
       expect(support_path.join("CHANGELOG.md").exist?).to be(false)
     end
   end
+
+  context "event is a merge to the default branch" do
+    let(:support_path) {
+      Pathname.new(File.expand_path("../update/support/merge", __FILE__))
+    }
+
+    let(:generated) {
+      [
+        support_path.join("CHANGELOG.md")
+      ]
+    }
+
+    it "generates the changelog" do
+      generate
+
+      expect(support_path.join("CHANGELOG.md").exist?).to be(true)
+    end
+  end
 end

@@ -39,7 +39,19 @@ module Commit
         end
 
         private def default_branch?
+          committed_to_default? || merged_to_default?
+        end
+
+        private def committed_to_default?
           event.config.ref! == event.config.repository.default_branch!
+        end
+
+        private def merged_to_default?
+          merged? && event.config.pull_request.base.ref! == event.config.pull_request.base.repo.default_branch!
+        end
+
+        private def merged?
+          event.config.pull_request.merged!
         end
       end
     end
