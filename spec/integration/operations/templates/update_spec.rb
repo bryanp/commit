@@ -510,10 +510,10 @@ RSpec.describe "update templates operation" do
       ]
     }
 
-    it "ignores the event" do
+    it "generates the changelog" do
       generate
 
-      expect(support_path.join("CHANGELOG.md").exist?).to be(false)
+      expect(support_path.join("CHANGELOG.md").exist?).to be(true)
     end
   end
 end

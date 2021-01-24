@@ -20,7 +20,7 @@ module Commit
       #
       class Update < Operation
         def call
-          return unless applicable?
+          # return unless applicable?
 
           Git::Pull.call(scope: scope, event: event)
 
