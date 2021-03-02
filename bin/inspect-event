@@ -3,7 +3,7 @@
 
 # Inspects the github event.
 
-if ENV.key?("DEBUG_COMMIT_TOOLS")
+unless ENV.key?("COMMIT__SILENT")
   require "pathname"
 
   event_path = Pathname.new(ENV["GITHUB_EVENT_PATH"])
