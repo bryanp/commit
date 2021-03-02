@@ -24,6 +24,17 @@ module Commit
       # implemented by subclasses
     end
 
+    def with_logging
+      log("start")
+      result = yield
+      log("finish")
+      result
+    end
+
+    private def log(message)
+      puts "#{Time.now} [#{self.class}] #{message}"
+    end
+
     # @api private
     private def cleanup
       @artifacts.each do |path|
@@ -34,8 +45,13 @@ module Commit
     class << self
       def call(*args, scope:, event:, **kwargs)
         instance = new(scope: scope, event: event)
-        instance.call(*args, **kwargs)
+
+        instance.with_logging do
+          instance.call(*args, **kwargs)
+        end
+
         yield instance if block_given?
+
         instance
       ensure
         instance.send(:cleanup)

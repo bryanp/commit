@@ -17,6 +17,7 @@ RSpec.describe Commit::Operation do
     before do
       allow(described_class).to receive(:new).with(scope: scope, event: event).and_return(instance)
       allow(instance).to receive(:call)
+      allow(instance).to receive(:with_logging).and_yield
     end
 
     let(:instance) {

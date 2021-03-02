@@ -14,7 +14,15 @@ module Commit
     module Changelogs
       class Update < Operation
         def call
-          return unless applicable?
+          unless applicable?
+            log "not applicable"
+            log "  merged? #{merged?}"
+            log "  default_branch? #{default_branch?}"
+            log "  release? #{release?}"
+            log "  changelog? #{changelog?}"
+            log "  changetype? #{changetype?}"
+            return
+          end
 
           Git::Pull.call(scope: scope, event: event)
 
