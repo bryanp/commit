@@ -83,7 +83,7 @@ module Commit
         end
 
         private def changelog?
-          (configured_changelog_labels & event.config.pull_request.labels.map(&:name!)).any?
+          (configured_changelog_labels & event.config.pull_request.labels!.map { |label| label["name"] }).any?
         end
 
         private def changetype?
