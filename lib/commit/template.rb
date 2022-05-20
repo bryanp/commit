@@ -12,19 +12,21 @@ module Commit
     end
 
     def generate(at:, context:)
-      context_binding = context.instance_eval {
-        binding
-      }
-
-      generated = @erb.result(context_binding)
-
       unless File.exist?(File.dirname(at))
         FileUtils.mkdir_p(File.dirname(at))
       end
 
       File.open(at, "w+") { |file|
-        file.write(generated)
+        file.write(render(context))
       }
+    end
+
+    def render(context, **locals)
+      context_binding = context.instance_eval {
+        binding
+      }
+
+      @erb.result(context_binding)
     end
   end
 end

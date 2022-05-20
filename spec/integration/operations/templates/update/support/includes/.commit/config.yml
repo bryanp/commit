@@ -1,0 +1,4 @@
+commit:
+  templates:
+    - source: "my-file.txt.erb"
+      destination: "./my-file.txt"
