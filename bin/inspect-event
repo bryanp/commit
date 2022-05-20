@@ -6,7 +6,7 @@
 unless ENV.key?("COMMIT__SILENT")
   require "pathname"
 
-  event_path = Pathname.new(ENV["GITHUB_EVENT_PATH"])
+  event_path = Pathname.new(ENV["GITHUB_EVENT_PATH"].to_s)
 
   if event_path.exist?
     puts event_path.read
